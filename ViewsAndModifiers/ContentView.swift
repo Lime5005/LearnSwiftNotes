@@ -14,7 +14,7 @@ struct Title: ViewModifier {
             .font(.largeTitle)
             .foregroundColor(.white)
             .padding()
-            .background(Color.yellow)
+            .background(Color.red)
             .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }
@@ -26,10 +26,33 @@ extension View {
     }
 }
 
+//Create a new struct and use it in the old one:
+struct Watermark: ViewModifier {
+    var text: String
+    func body(content: Content) -> some View {
+        ZStack(alignment: .bottomTrailing) {
+            content
+            Text(text)
+                .font(.caption)
+                .foregroundColor(.gray)
+                .padding(20)
+                .background(Color.yellow)
+        }
+    }
+}
+
+//Wrap up so it apply the modifier function directly:
+extension View {
+    func watermarked(with text: String) -> some View {
+        self.modifier(Watermark(text: text))
+    }
+}
+
 struct ContentView: View {
     var body: some View {
-        Text("Hello world")
-            .titleStyle()
+        Color.blue
+            .frame(width: 200, height: 200)
+            .watermarked(with: "Copy right reserved")
     }
 }
 
